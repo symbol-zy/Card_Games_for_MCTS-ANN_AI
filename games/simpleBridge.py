@@ -3,9 +3,9 @@
 from math import *
 import random, sys
 from copy import deepcopy
-from .game import GameState
+from games.game import GameState
 
-
+STARTCARD = 8
 
 class Card:
 	""" A playing card, with rank and suit.
@@ -13,7 +13,7 @@ class Card:
 		suit must be a string of length 1, one of 'C' (Clubs), 'D' (Diamonds), 'H' (Hearts) or 'S' (Spades)
 	"""
 	def __init__(self, rank, suit):
-		if rank not in range(2, 14+1):
+		if rank not in range(STARTCARD, 14+1):
 			raise Exception("Invalid rank")
 		if suit not in ['C', 'D', 'H', 'S']:
 			raise Exception("Invalid suit")
@@ -38,8 +38,8 @@ class SimpleBridgeState(GameState):
 		the player taking no tricks. At each new round, the player who won the last trick at the last round 
 		takes the lead.
 	"""
-	def __init__(self, n, m = 7):
-		""" Initialise the game state. n is the number of players (from 2 to 7).
+	def __init__(self, n = 4, m = 5):
+		""" Initialise the game state. n is the number of players (from 2 to 4).
 		"""
 		self.numberOfPlayers = n
 		self.playerToMove   = random.randint(1, n)
@@ -95,7 +95,7 @@ class SimpleBridgeState(GameState):
 	def GetCardDeck(self):
 		""" Construct a standard deck of 52 cards.
 		"""
-		return [Card(rank, suit) for rank in range(2, 14+1) for suit in ['C', 'D', 'H', 'S']]
+		return [Card(rank, suit) for rank in range(STARTCARD, 14+1) for suit in ['C', 'D', 'H', 'S']]
 	
 	def Deal(self):
 		""" Reset the game state for the beginning of a new round, and deal the cards.
@@ -156,14 +156,16 @@ class SimpleBridgeState(GameState):
 			self.playerToMove = trickWinner
 			
 			# If the next player's hand is empty, this round is over
-			if self.playerHands[self.playerToMove] == []:				
- 				#minp = min(players, key = lambda p: self.tricksTaken[p])
+			if self.playerHands[self.playerToMove] == []:
+				self.gameOver = True				
 				#knock out the players not taking the largest tricks
-				maxt = max(self.tricksTaken.values())
-				self.knockedOut = {p:self.tricksTaken[p] != maxt for p in range(1, self.numberOfPlayers+1)}
-				# If all but one players are now knocked out, the game is over
-				#if len([x for x in self.knockedOut.itervalues() if x == False]) <= 1:
-				self.gameOver = True
+				if self.tricksTaken[1] + self.tricksTaken[3] < self.tricksTaken[2] + self.tricksTaken[4]:
+					self.knockedOut[1] = True
+					self.knockedOut[3] = True
+				else:
+					self.knockedOut[2] = True
+					self.knockedOut[4] = True
+				
 				
 				
 	

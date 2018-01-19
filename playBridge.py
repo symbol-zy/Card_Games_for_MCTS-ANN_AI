@@ -1,4 +1,4 @@
-from games.simpleBridge import SimpleBridgeState
+from games.simpleBridge import *
 from MCTS.ISMCTS import ISMCTS
 
 
@@ -22,19 +22,18 @@ def getPlayerMove(state):
 def playGame(Round = 10):
 	""" Play a sample game between two ISMCTS players.
 	"""
-	numofPlayers = 3
-	numofCards = 10
+	numofPlayers = 4
 	wins = [0 for p in range(1, numofPlayers+1)]
 	for i in range(Round):
-		state = SimpleBridgeState(numofPlayers, numofCards)
+		state = SimpleBridgeState()
 		while (state.GetMoves() != []):
 			print(str(state))
 			# Use different numbers of iterations (simulations, tree nodes) for different players
 			if state.playerToMove == 1:
 				m = getPlayerMove(state)
-				ISMCTS(rootstate = state, numDeterm = 1000, numPredeterm = 1, playerType = 'tricks', verbose = False)
+				ISMCTS(rootstate = state, numDeterm = 1000, numPredeterm = 1, playerType = 'wins', verbose = False)
 			else:
-				m = ISMCTS(rootstate = state, numDeterm = 1000, numPredeterm = 1, playerType = 'tricks', verbose = False)
+				m = ISMCTS(rootstate = state, numDeterm = 1000, numPredeterm = 1, playerType = 'wins', verbose = False)
 				print("[R" + str(i+1) + "] Player " + str(state.playerToMove)  + " move: " + str(m) + "\n")
 
 			state.DoMove(m)
