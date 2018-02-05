@@ -5,13 +5,14 @@ import random, sys
 from copy import deepcopy
 from games.game import GameState
 
-STARTCARD = 8
+STARTCARD = 2
 
 class Card:
 	""" A playing card, with rank and suit.
 		rank must be an integer between 2 and 14 inclusive (Jack=11, Queen=12, King=13, Ace=14)
 		suit must be a string of length 1, one of 'C' (Clubs), 'D' (Diamonds), 'H' (Hearts) or 'S' (Spades)
 	"""
+    
 	def __init__(self, rank, suit):
 		if rank not in range(STARTCARD, 14+1):
 			raise Exception("Invalid rank")
@@ -38,7 +39,7 @@ class SimpleBridgeState(GameState):
 		the player taking no tricks. At each new round, the player who won the last trick at the last round 
 		takes the lead.
 	"""
-	def __init__(self, n = 4, m = 5):
+	def __init__(self, n = 4, m = 13):
 		""" Initialise the game state. n is the number of players (from 2 to 4).
 		"""
 		self.numberOfPlayers = n
