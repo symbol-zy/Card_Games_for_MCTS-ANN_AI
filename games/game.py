@@ -13,9 +13,9 @@ class GameState:
 		GetRandomMove() function to generate a random move during rollout.
 		By convention the players are numbered 1, 2, ..., self.numberOfPlayers.
 	"""
-	def __init__(self):
-		self.numberOfPlayers = 2
-		self.playerToMove = 1
+	def __init__(self, n):
+		self.numberOfPlayers = n
+		self.playerToMove = random.randint(1, n)
 	
 	def GetNextPlayer(self, p):
 		""" Return the player to the left of the specified player

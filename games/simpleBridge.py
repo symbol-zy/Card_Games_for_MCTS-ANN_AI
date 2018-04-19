@@ -39,11 +39,12 @@ class SimpleBridgeState(GameState):
 		the player taking no tricks. At each new round, the player who won the last trick at the last round 
 		takes the lead.
 	"""
-	def __init__(self, n = 4, m = 13):
-		""" Initialise the game state. n is the number of players (from 2 to 4).
+	def __init__(self, m = 13):
+		""" Initialise the game state. m is the number of cards (should <= 13).
 		"""
-		self.numberOfPlayers = n
-		self.playerToMove   = random.randint(1, n)
+		#self.numberOfPlayers = n
+		#self.playerToMove   = random.randint(1, n)
+		GameState.__init__(self, 4)
 		self.tricksInRound  = m
 		self.gameOver = False
 		self.playerHands    = {p:[] for p in range(1, self.numberOfPlayers+1)}
